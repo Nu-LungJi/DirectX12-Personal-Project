@@ -37,4 +37,8 @@ using namespace DirectX;
 #define ENGINE_DLL		__declspec(dllimport)
 #endif
 
+#define			ENGINE_START	namespace ENGINE {
+#define			ENGINE_END		}
+#define			ENGINE_USE	    using namespace ENGINE;
+
 #endif

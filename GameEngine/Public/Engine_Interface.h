@@ -1,8 +1,9 @@
 #pragma once
+#include "Engine_Default.h"
 
 namespace Interface {
 
-	class Uncopyable {
+	class ENGINE_DLL Uncopyable {
 	protected:
 		constexpr Uncopyable() = default;
 		constexpr virtual ~Uncopyable() = default;
@@ -11,7 +12,7 @@ namespace Interface {
 	};
 
 	template<typename T>
-	class Singleton {
+	class ENGINE_DLL Singleton {
 	protected:
 		constexpr Singleton() = default;
 		constexpr virtual ~Singleton() = default;

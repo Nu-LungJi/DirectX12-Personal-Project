@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="DX12PROJECT/Default/DX12PROJECT.vcxproj" />
+  <Project Path="GameEngine/Default/GameEngine.vcxproj" />
+</Solution>
