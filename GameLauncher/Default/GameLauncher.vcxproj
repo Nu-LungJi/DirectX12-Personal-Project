@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{147d5f49-2fd1-43df-9abc-8fd15d0e565b}</ProjectGuid>
-    <RootNamespace>DX12PROJECT</RootNamespace>
+    <RootNamespace>GameLauncher</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -75,28 +75,28 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)DX12PROJECT\Default\Bin\</OutDir>
-    <IntDir>$(SolutionDir)DX12PROJECT\Default\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
+    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)DX12PROJECT\Default\Bin\</OutDir>
-    <IntDir>$(SolutionDir)DX12PROJECT\Default\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
+    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)DX12PROJECT\Default\Bin\</OutDir>
+    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
-    <IntDir>$(SolutionDir)DX12PROJECT\Default\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)DX12PROJECT\Default\Bin\</OutDir>
+    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
-    <IntDir>$(SolutionDir)DX12PROJECT\Default\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgManifestInstall>false</VcpkgManifestInstall>
@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../Public;$(ProjectDir)Default;$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Public;$(ProjectDir);$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;$(SolutionDir)Extension\GameInput\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../Public;$(ProjectDir)Default;$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Public;$(ProjectDir);$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;$(SolutionDir)Extension\GameInput\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
@@ -161,7 +161,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../Public;$(ProjectDir)Default;$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Public;$(ProjectDir);$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;$(SolutionDir)Extension\GameInput\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
@@ -185,7 +185,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../Public;$(ProjectDir)Default;$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Public;$(ProjectDir);$(SolutionDir)Extension;$(SolutionDir)GameEngine/Public;$(SolutionDir)Extension\GameInput\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
@@ -204,7 +204,7 @@
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="COMMON.h" />
     <ClInclude Include="DEFINE.h" />
-    <ClInclude Include="DX12PROJECT.h" />
+    <ClInclude Include="GameLauncher.h" />
     <ClInclude Include="ENUM.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="PCH.h" />
@@ -213,17 +213,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\GameManager.cpp" />
-    <ClCompile Include="DX12PROJECT.cpp" />
+    <ClCompile Include="GameLauncher.cpp" />
     <ClCompile Include="PCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DX12PROJECT.rc" />
+    <ResourceCompile Include="GameLauncher.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DX12PROJECT.ico" />
+    <Image Include="GameLauncher.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameEngine\Default\GameEngine.vcxproj">
+      <Project>{c60be83d-f92e-48bb-b11d-905f7402ac98}</Project>
+      <Name>GameEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

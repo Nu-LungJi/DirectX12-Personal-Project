@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="DX12PROJECT.cpp" />
+    <ClCompile Include="GameLauncher.cpp">
+        <Filter>00. DefaultProject</Filter>
+    </ClCompile>
     <ClCompile Include="PCH.cpp">
       <Filter>00. DefaultProject\Default</Filter>
     </ClCompile>
@@ -10,10 +12,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="COMMON.h" />
-    <ClInclude Include="DEFINE.h" />
-    <ClInclude Include="ENUM.h" />
-    <ClInclude Include="DX12PROJECT.h">
+    <ClInclude Include="COMMON.h">
+        <Filter>00. DefaultProject</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFINE.h">
+        <Filter>00. DefaultProject</Filter>
+    </ClInclude>
+    <ClInclude Include="ENUM.h">
+        <Filter>00. DefaultProject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLauncher.h">
       <Filter>00. DefaultProject\Default</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -36,7 +44,7 @@
     <Image Include="small.ico">
       <Filter>00. DefaultProject\Assets</Filter>
     </Image>
-    <Image Include="DX12PROJECT.ico">
+    <Image Include="GameLauncher.ico">
       <Filter>00. DefaultProject\Assets</Filter>
     </Image>
   </ItemGroup>
@@ -55,7 +63,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DX12PROJECT.rc">
+    <ResourceCompile Include="GameLauncher.rc">
       <Filter>00. DefaultProject\Assets</Filter>
     </ResourceCompile>
   </ItemGroup>
