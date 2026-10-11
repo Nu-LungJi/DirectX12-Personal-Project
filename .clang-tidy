@@ -1,0 +1,5 @@
+Checks: '-*,clang-analyzer-*,bugprone-*,performance-*,concurrency-*,modernize-use-override,modernize-use-nullptr,modernize-use-equals-default,modernize-use-equals-delete'
+WarningsAsErrors: ''
+HeaderFilterRegex: '(^|[/\\])(GameEngine|GameLauncher)[/\\](Public|Private|Default)[/\\]'
+SystemHeaders: false
+FormatStyle: none
