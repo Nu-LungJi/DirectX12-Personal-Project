@@ -60,3 +60,99 @@ jobs:
           /p:Platform=x64
           /verbosity:minimal
           /nologo
+
+  static-analysis:
+    name: MSVC Analysis x64 ${{ matrix.configuration }}
+    runs-on: windows-2022
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v3
+        with:
+          msbuild-architecture: x64
+
+      - name: Run MSVC code analysis
+        shell: pwsh
+        env:
+          CL: /analyze /analyze:external-
+        run: >
+          msbuild DX12PROJECT.slnx
+          /m
+          /t:Rebuild
+          /p:Configuration=${{ matrix.configuration }}
+          /p:Platform=x64
+          /p:RunCodeAnalysis=true
+          /p:EnableMicrosoftCodeAnalysis=true
+          /verbosity:normal
+          "/flp:logfile=msvc-analysis.log;verbosity=normal"
+          /bl:msvc-analysis.binlog
+          /nologo
+
+      - name: Upload analysis diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: msvc-analysis-x64-${{ matrix.configuration }}
+          path: |
+            msvc-analysis.log
+            msvc-analysis.binlog
+          if-no-files-found: warn
+          retention-days: 7
+
+  clang-tidy:
+    name: clang-tidy x64 ${{ matrix.configuration }}
+    runs-on: windows-2022
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v3
+        with:
+          msbuild-architecture: x64
+
+      - name: Run clang-tidy
+        shell: pwsh
+        run: >
+          msbuild DX12PROJECT.slnx
+          /m
+          /t:Rebuild
+          /p:Configuration=${{ matrix.configuration }}
+          /p:Platform=x64
+          /p:RunCodeAnalysis=true
+          /p:EnableMicrosoftCodeAnalysis=false
+          /p:EnableClangTidyCodeAnalysis=true
+          /verbosity:normal
+          "/flp:logfile=clang-tidy.log;verbosity=normal"
+          /bl:clang-tidy.binlog
+          /nologo
+
+      - name: Upload clang-tidy diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: clang-tidy-x64-${{ matrix.configuration }}
+          path: |
+            clang-tidy.log
+            clang-tidy.binlog
+            GameEngine/Default/**/GameEngine.ClangTidy.log
+            GameLauncher/Default/**/GameLauncher.ClangTidy.log
+          if-no-files-found: warn
+          retention-days: 7
+
