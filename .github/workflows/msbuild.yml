@@ -155,4 +155,3 @@ jobs:
             GameLauncher/Default/**/GameLauncher.ClangTidy.log
           if-no-files-found: warn
           retention-days: 7
-
