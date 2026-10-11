@@ -1,0 +1,62 @@
+name: Windows Build
+
+on:
+  pull_request:
+    branches:
+      - Feature
+      - Master
+      - Develop
+      - HotFix
+      - Integration
+      - Release
+
+  push:
+    branches:
+      - Feature
+      - Master
+      - Develop
+      - HotFix
+      - Integration
+      - Release
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: MSBuild x64 ${{ matrix.configuration }}
+    runs-on: windows-2022
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration:
+          - Debug
+          - Release
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v3
+        with:
+          msbuild-architecture: x64
+
+      - name: Build solution
+        shell: pwsh
+        run: >
+          msbuild DX12PROJECT.slnx
+          /m
+          /t:Build
+          /p:Configuration=${{ matrix.configuration }}
+          /p:Platform=x64
+          /verbosity:minimal
+          /nologo
