@@ -178,6 +178,7 @@
     <ClInclude Include="..\Public\GraphicDevice.h" />
     <ClInclude Include="..\Public\RenderManager.h" />
     <ClInclude Include="..\Public\TimeManager.h" />
+    <ClInclude Include="..\Public\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\GameController.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="..\Private\GraphicDevice.cpp" />
     <ClCompile Include="..\Private\RenderManager.cpp" />
     <ClCompile Include="..\Private\TimeManager.cpp" />
+    <ClCompile Include="..\Private\Utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
