@@ -9,3 +9,17 @@ Release/
 *.pdb
 *.ilk
 *.tlog
+
+
+.idea/
+
+# Generated build output
+Bin/
+*.APS
+*.aps
+*.exp
+*.idb
+*.pch
+
+# Vendored GameInput link library
+!Extension/GameInput/native/lib/x64/GameInput.lib
