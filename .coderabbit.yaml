@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "ko-KR"
+
+reviews:
+  profile: "chill"
+  high_level_summary: true
+  poem: false
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+
+  path_filters:
+    - "!Extension/**"
+    - "!**/Bin/**"
+    - "!**/Debug/**"
+    - "!**/Release/**"
+    - "!**/x64/**"
+    - "!**/.vs/**"
+    - "!**/.idea/**"
+
+  path_instructions:
+    - path: "GameEngine/**"
+      instructions: |
+        This is a Windows DirectX 12 engine using C++20.
+        Prioritize correctness, object lifetime, initialization failure
+        handling, thread safety, and measurable performance concerns.
+        Check data races, synchronization, input frame consistency,
+        GPU resource lifetime, barriers, and fence synchronization.
+        Do not assume planned systems are already implemented.
+        Do not recommend consteval for runtime input or frame updates.
+        Avoid speculative optimization and minor style comments.
+
+    - path: "GameLauncher/**"
+      instructions: |
+        Review the Win32 message loop, initialization and shutdown,
+        focus handling, and calls into GameManager and GameInstance.
+        Check DLL interfaces and build configuration consistency.
+        Focus on concrete bugs and explain how they can occur.
