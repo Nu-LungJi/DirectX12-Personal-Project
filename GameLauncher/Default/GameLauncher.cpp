@@ -1,8 +1,8 @@
-﻿#include "framework.h"
+﻿#include "PCH.h"
+#include "framework.h"
 #include "PCH.h"
-#include "DX12PROJECT.h"
-#include "Engine_Default.h"
-#include "GameInstance.h"
+#include "GameLauncher.h"
+#include "GameManager.h"
 
 constexpr int MAX_LOADSTRING = 100;
 
@@ -25,24 +25,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_DX12PROJECT, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_GAMELAUNCHER, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
+    BOOL Result = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    if (!Result) return FALSE;
+    
     if (!InitInstance (hInstance, nCmdShow)) return FALSE;
 
-    if (SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)) return FALSE;
-
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DX12PROJECT));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMELAUNCHER));
 
     MSG msg = {};
-    msg.message = WM_NULL;
-
 	BOOL SystemRunningMessage = TRUE;
-
+    
+    GameManager& GM = GameManager::Create();
+    if (FAILED(GM.Initialize())) {
+        DestroyWindow(hWnd);
+        return EXIT_FAILURE;
+    }
     while (SystemRunningMessage) {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 SystemRunningMessage = FALSE;
+                break;
             }
             else {
                 if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) {
@@ -50,16 +55,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
                     DispatchMessage(&msg);
                 }
             }
-		}
- 
+        }
+		
+        if (!SystemRunningMessage) break;
+        
+        GM.Update();
+        GM.LateUpdate();
+        GM.Render();
     }
 
-    return (int) msg.wParam;
+    return static_cast<int>(msg.wParam);
 }
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+    WNDCLASSEXW wcex{};
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -68,7 +78,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DX12PROJECT));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMELAUNCHER));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = NULL;
@@ -80,12 +90,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     hInst = hInstance;
+    
+    hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    
+    if (!hWnd) return FALSE;
 
-    if (hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr)) return FALSE;
-
-    if (!ShowWindow(hWnd, nCmdShow))    return FALSE;
-    if (!UpdateWindow(hWnd))            return FALSE;
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
     return TRUE;
 }
@@ -98,6 +110,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case VK_ESCAPE:
                 PostQuitMessage(0);
                 break;
+            default: ;
             }
         }
         break;
@@ -109,6 +122,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                ENGINE::GameInstance::Get_Instance().RequestTimeReset();
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
@@ -121,13 +135,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_SETFOCUS:
+        // 게임 창이 키보드 포커스를 얻음
+        ENGINE::GameInstance::Get_Instance().SetInputFocused(true);
+        return 0;
+
+    case WM_KILLFOCUS:
+        // 다른 창이나 대화상자로 키보드 포커스가 이동함
+        ENGINE::GameInstance::Get_Instance().SetInputFocused(false);
+        return 0;
+
+    case WM_ACTIVATEAPP:
+        // Alt+Tab 등으로 다른 프로그램이 활성화됨
+        if (!wParam)
+        {
+            ENGINE::GameInstance::Get_Instance().SetInputFocused(false);
+        }
+        break;
+    case WM_EXITSIZEMOVE:
+        ENGINE::GameInstance::Get_Instance().RequestTimeReset();
+        return 0;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
 }
 
-// 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -143,6 +176,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             return (INT_PTR)TRUE;
         }
         break;
+    default: ;
     }
     return (INT_PTR)FALSE;
 }
