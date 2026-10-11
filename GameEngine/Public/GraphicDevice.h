@@ -2,10 +2,14 @@
 #include "Engine_Default.h"
 #include "Engine_Interface.h"
 
-class ENGINE_DLL GraphicDevice : public Interface::Uncopyable, public Interface::Singleton<GraphicDevice> {
+ENGINE_START
+
+class GameInstance;
+class ENGINE_DLL GraphicDevice : public Interface::Uncopyable {
+	friend class GameInstance;
 private:
-	GraphicDevice() = default;
+	explicit GraphicDevice() = default;
 	~GraphicDevice() = default;
 
-	friend class Interface::Singleton<GraphicDevice>;
 };
+ENGINE_END
