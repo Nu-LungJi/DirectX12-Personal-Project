@@ -62,9 +62,14 @@ jobs:
           /nologo
 
   static-analysis:
-    name: MSVC Analysis x64 Debug
+    name: MSVC Analysis x64 ${{ matrix.configuration }}
     runs-on: windows-2022
     timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
 
     steps:
       - name: Check out repository
@@ -83,7 +88,7 @@ jobs:
           msbuild DX12PROJECT.slnx
           /m
           /t:Rebuild
-          /p:Configuration=Debug
+          /p:Configuration=${{ matrix.configuration }}
           /p:Platform=x64
           /p:RunCodeAnalysis=true
           /p:EnableMicrosoftCodeAnalysis=true
@@ -96,7 +101,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: msvc-analysis-x64-debug
+          name: msvc-analysis-x64-${{ matrix.configuration }}
           path: |
             msvc-analysis.log
             msvc-analysis.binlog
