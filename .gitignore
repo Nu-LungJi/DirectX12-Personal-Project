@@ -1,11 +1,33 @@
+# IDE settings
 .vs/
+.idea/
+*.vcxproj.user
+
+# Generated build directories
 x64/
 Debug/
 Release/
-*.vcxproj.user
+Bin/
+
+# Generated binaries and intermediate files
 *.dll
 *.lib
+*.exe
 *.obj
 *.pdb
 *.ilk
 *.tlog
+*.exp
+*.idb
+*.pch
+*.aps
+*.APS
+
+# Vendored third-party libraries
+!Extension/Library/*.lib
+!Extension/Library/*.dll
+
+# GameInput SDK libraries
+!Extension/GameInput/native/lib/x64/
+!Extension/GameInput/native/lib/x64/GameInput.lib
+!Extension/GameInput/native/lib/arm64/GameInput.lib
