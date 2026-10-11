@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(disable : 4251)
+
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
@@ -7,10 +9,18 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 
-#include <d3dcompiler.h>
-
+#include <algorithm>
+#include <cmath>
+#include <mutex>
 #include <memory>
 #include <utility>
+#include <cstdint>
+#include <format>
+#include <string>
+#include <string_view>
+#include <Windows.h>
+
+#include <d3dcompiler.h>
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -30,15 +40,18 @@ using namespace DirectX;
 #define new DBG_NEW 
 
 #endif
+#endif
+//////////////////////////////////////////////////// CRT Memory Leakage Detection
 
 #ifdef	ENGINE_EXPORTS
 #define ENGINE_DLL		__declspec(dllexport)
 #else
 #define ENGINE_DLL		__declspec(dllimport)
 #endif
+//////////////////////////////////////////////////// DLL Import
 
 #define			ENGINE_START	namespace ENGINE {
 #define			ENGINE_END		}
 #define			ENGINE_USE	    using namespace ENGINE;
+//////////////////////////////////////////////////// namespace Wrapper
 
-#endif
