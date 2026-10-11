@@ -34,6 +34,10 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 20
 
+    permissions:
+      contents: read
+      pull-requests: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -44,6 +48,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+
+      - name: Test failure reporter
+        if: matrix.configuration == 'Debug'
+        shell: pwsh
+        run: python -m unittest discover -s .github/scripts -p test_report_ci_failure.py
 
       - name: Set up MSBuild
         uses: microsoft/setup-msbuild@v3
@@ -59,12 +68,40 @@ jobs:
           /p:Configuration=${{ matrix.configuration }}
           /p:Platform=x64
           /verbosity:minimal
+          "/flp:logfile=msbuild.log;verbosity=normal"
+          /bl:msbuild.binlog
           /nologo
+
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: msbuild-x64-${{ matrix.configuration }}
+          path: |
+            msbuild.log
+            msbuild.binlog
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Report CI failure to PR
+        if: failure() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPORT_JOB_STATUS: ${{ job.status }}
+          REPORT_CHECK: MSBuild
+          REPORT_CONFIGURATION: ${{ matrix.configuration }}
+          REPORT_LOG: msbuild.log
+        run: python .github/scripts/report_ci_failure.py
 
   static-analysis:
     name: MSVC Analysis x64 ${{ matrix.configuration }}
     runs-on: windows-2022
     timeout-minutes: 20
+
+    permissions:
+      contents: read
+      pull-requests: write
 
     strategy:
       fail-fast: false
@@ -108,10 +145,25 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - name: Report CI failure to PR
+        if: failure() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPORT_JOB_STATUS: ${{ job.status }}
+          REPORT_CHECK: MSVC Analysis
+          REPORT_CONFIGURATION: ${{ matrix.configuration }}
+          REPORT_LOG: msvc-analysis.log
+        run: python .github/scripts/report_ci_failure.py
+
   clang-tidy:
     name: clang-tidy x64 ${{ matrix.configuration }}
     runs-on: windows-2022
     timeout-minutes: 20
+
+    permissions:
+      contents: read
+      pull-requests: write
 
     strategy:
       fail-fast: false
@@ -155,3 +207,15 @@ jobs:
             GameLauncher/Default/**/GameLauncher.ClangTidy.log
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Report CI failure to PR
+        if: failure() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPORT_JOB_STATUS: ${{ job.status }}
+          REPORT_CHECK: clang-tidy
+          REPORT_CONFIGURATION: ${{ matrix.configuration }}
+          REPORT_LOG: clang-tidy.log
+        run: python .github/scripts/report_ci_failure.py
+
