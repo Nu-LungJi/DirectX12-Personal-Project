@@ -2,10 +2,15 @@
 #include "Engine_Default.h"
 #include "Engine_Interface.h"
 
-class ENGINE_DLL RenderManager : public Interface::Uncopyable, public Interface::Singleton<RenderManager> {
+ENGINE_START
+
+class GameInstance;
+
+class ENGINE_DLL RenderManager : public Interface::Uncopyable {
+	friend class GameInstance;
 private:
-	RenderManager() = default;
+	explicit RenderManager() = default;
 	~RenderManager() = default;
 
-	friend class Interface::Singleton<RenderManager>;
 };
+ENGINE_END
