@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "EngineCommonHeader/Engine_Default.h"
 #include "EngineCommonHeader/Engine_Interface.h"
 
@@ -7,6 +7,7 @@
 #include "GameController.h"
 #include "RenderManager.h"
 #include "SoundManager.h"
+#include "ShaderManager.h"
 #include "LightManager.h"
 #include "EngineUtility.h"
 
@@ -51,6 +52,7 @@ private:
     GameController	m_pGameController;
     RenderManager	m_pRenderManager;
     SoundManager	m_pSoundManager;
+    ShaderManager	m_pShaderManager;
     LightManager	m_pLightManager;
 	
     EngineUtility	m_pEngineUtility;

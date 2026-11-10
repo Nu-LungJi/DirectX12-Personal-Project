@@ -1,4 +1,4 @@
-#include "GameInstance.h"
+﻿#include "GameInstance.h"
 #include "GraphicDevice.h"
 #include "TimeManager.h"
 
@@ -10,6 +10,9 @@ HRESULT GameInstance::Initialize() {
         
     
     m_pTimeManager.Reset();
+    
+    HRESULT Result = m_pShaderManager.Initialize();
+    if (FAILED(Result)) return Result;
     return S_OK;
 }
 
@@ -18,6 +21,7 @@ void GameInstance::Update() {
     ResetTime ? m_pTimeManager.Reset() : m_pTimeManager.Update();
 
     m_pGameController.BeginFrame();
+    m_pShaderManager.Update();
 }
 
 void GameInstance::LateUpdate() {

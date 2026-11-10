@@ -26,4 +26,8 @@ namespace Interface {
 	class EngineManager {
 		
 	};
+	
+	class EngineResource {
+		
+	};
 }

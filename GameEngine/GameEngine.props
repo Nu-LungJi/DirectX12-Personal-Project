@@ -3,23 +3,28 @@
   <PropertyGroup>
     <EngineIncludeRoot>$(MSBuildThisFileDirectory)</EngineIncludeRoot>
     <ExtensionIncludeRoot>$(EngineIncludeRoot)..\Extension\</ExtensionIncludeRoot>
+    <DxcRoot>$(ExtensionIncludeRoot)DXC\</DxcRoot>
 
     <EngineManagerDirectories>$([System.IO.Directory]::GetDirectories('$(EngineIncludeRoot)EngineManager', '*', System.IO.SearchOption.AllDirectories))</EngineManagerDirectories>
     <EngineEditorDirectories>$([System.IO.Directory]::GetDirectories('$(EngineIncludeRoot)EngineEditor', '*', System.IO.SearchOption.AllDirectories))</EngineEditorDirectories>
+    <EngineResourceDirectories>$([System.IO.Directory]::GetDirectories('$(EngineIncludeRoot)EngineResource', '*', System.IO.SearchOption.AllDirectories))</EngineResourceDirectories>
 
     <EngineHeaderDirectories>
       $(EngineIncludeRoot);
       $(EngineIncludeRoot)EngineCommonHeader;
       $(EngineIncludeRoot)EngineManager;
       $(EngineIncludeRoot)EngineEditor;
+      $(EngineIncludeRoot)EngineResource;
       $(EngineManagerDirectories);
       $(EngineEditorDirectories);
+      $(EngineResourceDirectories)
     </EngineHeaderDirectories>
 
     <EngineDependencyDirectories>
       $(ExtensionIncludeRoot);
       $(ExtensionIncludeRoot)Include;
       $(ExtensionIncludeRoot)GameInput\native\include;
+      $(DxcRoot)inc
     </EngineDependencyDirectories>
   </PropertyGroup>
 
@@ -27,5 +32,12 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(EngineHeaderDirectories);$(EngineDependencyDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(MSBuildProjectName)' == 'GameEngine' And '$(Platform)' == 'x64'">
+    <Link>
+      <AdditionalLibraryDirectories>$(DxcRoot)lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
 </Project>
