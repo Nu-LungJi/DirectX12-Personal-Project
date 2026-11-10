@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 #include <array>
 
-#include "Engine_Default.h"
-#include "Engine_Interface.h"
+#include "EngineCommonHeader/Engine_Default.h"
+#include "EngineCommonHeader/Engine_Interface.h"
 
 #include <Windows.h>
 #include <GameInput.h>
@@ -284,7 +284,7 @@ private:
 	~GameController() = default;
 	
 	// Call before starting update/read tasks or after all tasks have stopped.
-	[[nodiscard]]
+	[[nodiscard("Warning : Check GameController Initialize Result.")]]
 	HRESULT Initialize();
 
 public:

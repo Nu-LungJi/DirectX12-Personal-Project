@@ -22,4 +22,8 @@ namespace Interface {
 			return instance;
 		}
 	};
+	
+	class EngineManager {
+		
+	};
 }

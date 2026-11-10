@@ -1,4 +1,4 @@
-#include "GameController.h"
+﻿#include "GameController.h"
 #include "GameInstance.h"
 
 #pragma comment(lib, "gameinput.lib")
@@ -10,7 +10,7 @@ HRESULT GameController::Initialize() {
 
     HRESULT hr = GI::GameInputCreate(m_input.ReleaseAndGetAddressOf());
 
-    if (FAILED(hr)) return Utility::ErrorMassage(hr, L"GameController::Initialize -> GameInputCreate");
+    if (FAILED(hr)) return EngineUtility::ErrorMassage(hr, L"GameController::Initialize -> GameInputCreate");
 
     m_input->SetFocusPolicy(GI::GameInputDefaultFocusPolicy);
 
@@ -36,7 +36,7 @@ HRESULT GameController::Initialize() {
         if (FAILED(hr)) {
             const auto location = std::format(L"GameController::Initialize -> CreateAggregateDevice [{}]", deviceNames[i]);
             Shutdown();
-            return Utility::ErrorMassage(hr, location);
+            return EngineUtility::ErrorMassage(hr, location);
         }
 
         stream.aggregateCreated = true;
@@ -46,7 +46,7 @@ HRESULT GameController::Initialize() {
         if (FAILED(hr)) {
             const auto location = std::format(L"GameController::Initialize -> FindDeviceFromId  [{}]", deviceNames[i]);
             Shutdown();
-            return Utility::ErrorMassage(hr, location);
+            return EngineUtility::ErrorMassage(hr, location);
         }
     }
 
