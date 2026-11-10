@@ -1,6 +1,6 @@
-#pragma once
-#include "Engine_Default.h"
-#include "Engine_Interface.h"
+﻿#pragma once
+#include "EngineCommonHeader/Engine_Default.h"
+#include "EngineCommonHeader/Engine_Interface.h"
 
 #include <algorithm>
 #include <chrono>
@@ -20,7 +20,7 @@ private:
 public:
 	using Clock		= std::chrono::steady_clock;			// Not Affected By System Setting
 	using TimePoint = Clock::time_point;
-	using Seconds   = std::chrono::duration<double>; 
+	using Seconds   = std::chrono::duration<double>;
 	
 public:
 	void	Update();

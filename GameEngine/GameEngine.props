@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <EngineIncludeRoot>$(MSBuildThisFileDirectory)</EngineIncludeRoot>
+    <ExtensionIncludeRoot>$(EngineIncludeRoot)..\Extension\</ExtensionIncludeRoot>
+
+    <EngineManagerDirectories>$([System.IO.Directory]::GetDirectories('$(EngineIncludeRoot)EngineManager', '*', System.IO.SearchOption.AllDirectories))</EngineManagerDirectories>
+    <EngineEditorDirectories>$([System.IO.Directory]::GetDirectories('$(EngineIncludeRoot)EngineEditor', '*', System.IO.SearchOption.AllDirectories))</EngineEditorDirectories>
+
+    <EngineHeaderDirectories>
+      $(EngineIncludeRoot);
+      $(EngineIncludeRoot)EngineCommonHeader;
+      $(EngineIncludeRoot)EngineManager;
+      $(EngineIncludeRoot)EngineEditor;
+      $(EngineManagerDirectories);
+      $(EngineEditorDirectories);
+    </EngineHeaderDirectories>
+
+    <EngineDependencyDirectories>
+      $(ExtensionIncludeRoot);
+      $(ExtensionIncludeRoot)Include;
+      $(ExtensionIncludeRoot)GameInput\native\include;
+    </EngineDependencyDirectories>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(EngineHeaderDirectories);$(EngineDependencyDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

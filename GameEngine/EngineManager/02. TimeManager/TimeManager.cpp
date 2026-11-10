@@ -1,4 +1,4 @@
-#include "TimeManager.h"
+﻿#include "TimeManager.h"
 ENGINE_USE
 
 void TimeManager::Update() {

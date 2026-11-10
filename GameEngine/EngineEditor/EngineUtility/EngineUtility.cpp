@@ -1,6 +1,6 @@
-﻿#include "Utility.h"
+﻿#include "EngineUtility.h"
 
-HRESULT ENGINE::Utility::ErrorMassage(HRESULT hr, std::wstring_view location) {
+HRESULT ENGINE::EngineUtility::ErrorMassage(HRESULT hr, std::wstring_view location) {
     if (SUCCEEDED(hr)) return hr;
 
     wchar_t description[1024]{};
@@ -11,8 +11,7 @@ HRESULT ENGINE::Utility::ErrorMassage(HRESULT hr, std::wstring_view location) {
 
     const std::wstring_view detail = length != 0 ? std::wstring_view{description, length} : std::wstring_view{L"No system description is available."};
 
-    const auto message = std::format(L"Location: {}\n" L"HRESULT: 0x{:08X}\n\n{}", 
-        location, static_cast<std::uint32_t>(hr), detail);
+    const auto message = std::format(L"Location: {}\n" L"HRESULT: 0x{:08X}\n\n{}", location, static_cast<std::uint32_t>(hr), detail);
 
     MessageBoxW(nullptr, message.c_str(), L"Initialization Error", MB_OK | MB_ICONERROR);
 
