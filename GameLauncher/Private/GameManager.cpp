@@ -5,8 +5,8 @@
 GameManager::GameManager()  : m_pGameInstance{ENGINE::GameInstance::Get_Instance()} {}
 GameManager::~GameManager() = default;
 
-HRESULT GameManager::Initialize() {
-    return m_pGameInstance.Initialize();
+HRESULT GameManager::Initialize(const ENGINE::GraphicDeviceDesc& GraphicDesc) {
+    return m_pGameInstance.Initialize(GraphicDesc);
 }
 
 void GameManager::Update() noexcept {
@@ -14,11 +14,11 @@ void GameManager::Update() noexcept {
 }
 
 void GameManager::LateUpdate() noexcept {
-    
+    m_pGameInstance.LateUpdate();   
 }
 
-void GameManager::Render() noexcept {
-    
+HRESULT GameManager::Render() noexcept {
+    return m_pGameInstance.Render();
 }
 
 GameManager& GameManager::Create() {

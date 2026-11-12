@@ -1,6 +1,7 @@
 ﻿#include "PCH.h"
 #include "framework.h"
 #include "PCH.h"
+#include "DEFINE.h"
 #include "GameLauncher.h"
 #include "GameManager.h"
 
@@ -38,12 +39,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     MSG msg = {};
 	BOOL SystemRunningMessage = TRUE;
     
+    HRESULT RenderResult = S_OK;
+    
     GameManager& GM = GameManager::Create();
     
-    if (FAILED(GM.Initialize())) {
+    ENGINE::GraphicDeviceDesc GraphicDesc{};
+    GraphicDesc.WindowHandle    = hWnd;
+    GraphicDesc.WindowWidth     = WindowWidth;
+    GraphicDesc.WindowHeight    = WindowHeight;
+    GraphicDesc.BackBufferCount = 3;
+    GraphicDesc.EnableVSync     = true;
+    GraphicDesc.AllowTearing    = true;
+
+    if (FAILED(GM.Initialize(GraphicDesc)))
+    {
         DestroyWindow(hWnd);
         return EXIT_FAILURE;
     }
+
     while (SystemRunningMessage) {
         while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
@@ -62,10 +75,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         
         GM.Update();
         GM.LateUpdate();
-        GM.Render();
+        RenderResult = GM.Render();
+        
+        if (FAILED(RenderResult)) {
+            OutputDebugStringW(L"Rendering failed.\n");
+            break;
+        }
+        
+        if (RenderResult == S_FALSE)
+            WaitMessage();
     }
 
-    return static_cast<int>(msg.wParam);
+    if (IsWindow(hWnd))
+        DestroyWindow(hWnd);
+
+    return FAILED(RenderResult) ? EXIT_FAILURE : static_cast<int>(msg.wParam);
 }
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
@@ -91,14 +115,39 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     hInst = hInstance;
+
+    constexpr DWORD Style = WS_OVERLAPPEDWINDOW;
+    constexpr DWORD ExStyle = 0;
+
+    RECT Rect{
+        0, 0,
+        static_cast<LONG>(WindowWidth),
+        static_cast<LONG>(WindowHeight)
+    };
+
+    if (!AdjustWindowRectExForDpi(&Rect, Style, FALSE, ExStyle, GetDpiForSystem()))
+        return FALSE;
     
-    hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-    
-    if (!hWnd) return FALSE;
+    hWnd = CreateWindowExW(
+        ExStyle,
+        szWindowClass,
+        szTitle,
+        Style,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        Rect.right - Rect.left,
+        Rect.bottom - Rect.top,
+        nullptr,
+        nullptr,
+        hInstance,
+        nullptr);
+
+    if (!hWnd)
+        return FALSE;
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
+    return TRUE;
 
     return TRUE;
 }
@@ -123,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                ENGINE::GameInstance::Get_Instance().RequestTimeReset();
+                ENGINE::GameInstance::Get_Instance().Request_TimeReset();
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
@@ -133,28 +182,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+    case WM_SIZE:
+        {
+            const uint32_t Width = wParam == SIZE_MINIMIZED ? 0u : static_cast<uint32_t>(LOWORD(lParam));
+            const uint32_t Height = wParam == SIZE_MINIMIZED ? 0u : static_cast<uint32_t>(HIWORD(lParam));
+
+            ENGINE::GameInstance::Get_Instance().Request_Resize(Width, Height);
+            return 0;
+        }
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
     case WM_SETFOCUS:
         // 게임 창이 키보드 포커스를 얻음
-        ENGINE::GameInstance::Get_Instance().SetInputFocused(true);
+        ENGINE::GameInstance::Get_Instance().Set_InputFocused(true);
         return 0;
 
     case WM_KILLFOCUS:
         // 다른 창이나 대화상자로 키보드 포커스가 이동함
-        ENGINE::GameInstance::Get_Instance().SetInputFocused(false);
+        ENGINE::GameInstance::Get_Instance().Set_InputFocused(false);
         return 0;
 
     case WM_ACTIVATEAPP:
         // Alt+Tab 등으로 다른 프로그램이 활성화됨
         if (!wParam)
         {
-            ENGINE::GameInstance::Get_Instance().SetInputFocused(false);
+            ENGINE::GameInstance::Get_Instance().Set_InputFocused(false);
         }
         break;
     case WM_EXITSIZEMOVE:
-        ENGINE::GameInstance::Get_Instance().RequestTimeReset();
+        ENGINE::GameInstance::Get_Instance().Request_TimeReset();
         return 0;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

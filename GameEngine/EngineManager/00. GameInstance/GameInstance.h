@@ -19,10 +19,10 @@ private:
     ~GameInstance() override = default;
 	
 public:
-    HRESULT Initialize();
+    HRESULT Initialize(const GraphicDeviceDesc& GraphicDesc);
     void Update();
     void LateUpdate();
-    void Render();
+    HRESULT Render() noexcept;
 	
     [[nodiscard("Warning : Store Instance after Create.")]]
     static GameInstance&	Get_Instance();
@@ -31,21 +31,38 @@ public:
     const GraphicDevice&	Get_GraphicDevice() const noexcept { return m_pGraphicDevice; }
 	
     [[nodiscard("Warning : Use or Store Instance.")]]
-    const TimeManager&		Get_TimeManager()	const noexcept { return m_pTimeManager; }
+    const TimeManager&		Get_TimeManager()	 const noexcept { return m_pTimeManager; }
+	
+	[[nodiscard("Warning : Use or Store Instance.")]]
+	const GameController&	Get_GameController() const noexcept { return m_pGameController; }
 	
     [[nodiscard("Warning : Use or Store Instance.")]]
-    const RenderManager&	Get_RenderManager() const noexcept { return m_pRenderManager; }
+    const RenderManager&	Get_RenderManager()  const noexcept { return m_pRenderManager; }
 	
-    [[nodiscard("Warning : Use or Store Instance.")]]
-    const GameController&	Get_GameController() const noexcept { return m_pGameController; }
+	[[nodiscard("Warning : Use or Store Instance.")]]
+	const SoundManager&		Get_SoundManager()   const noexcept { return m_pSoundManager; }
 	
-    [[nodiscard("Warning : Use or Store Instance.")]]
-    const EngineUtility&	Get_EngineUtility() const noexcept { return m_pEngineUtility; }
+	[[nodiscard("Warning : Use or Store Instance.")]]
+	const ShaderManager&	Get_ShaderManager()   const noexcept { return m_pShaderManager; }
+	
+	[[nodiscard("Warning : Use or Store Instance.")]]
+	const LightManager&		Get_LightManager()    const noexcept { return m_pLightManager; }
 	
 public:
-    void SetInputFocused(bool focused) noexcept { m_pGameController.SetInputFocused(focused); }
-    void RequestTimeReset() noexcept { m_pTimeResetRequested.store(true,std::memory_order_release); }
+    [[nodiscard("Warning : Use or Store Instance.")]]
+    const EngineUtility&	Get_EngineUtility()   const noexcept { return m_pEngineUtility; }
+	
 
+public:
+    void Set_InputFocused(bool focused) noexcept { m_pGameController.SetInputFocused(focused); }
+    void Request_TimeReset() noexcept { m_pTimeResetRequested.store(true,std::memory_order_release); }
+
+	void Request_Resize(uint32_t Width, uint32_t Height) noexcept
+    {
+    	m_iPendingWidth = Width;
+    	m_iPendingHeight = Height;
+    	m_bResizePending = true;
+    }
 private:
     GraphicDevice	m_pGraphicDevice;
     TimeManager		m_pTimeManager;
@@ -59,5 +76,9 @@ private:
 	
 private:
     std::atomic<bool> m_pTimeResetRequested{false};
+	
+	uint32_t m_iPendingWidth = 0;
+	uint32_t m_iPendingHeight = 0;
+	bool m_bResizePending = false;
 };
 ENGINE_END

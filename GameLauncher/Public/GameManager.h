@@ -11,10 +11,10 @@ private:
     ~GameManager();
     
 public:
-    HRESULT Initialize();
+    HRESULT Initialize(const ENGINE::GraphicDeviceDesc& GraphicDesc);
     void Update() noexcept;
     void LateUpdate() noexcept;
-    void Render() noexcept;
+    HRESULT Render() noexcept;
     
     [[nodiscard("Warning : Store Instance after Create.")]]
     static GameManager& Create();
