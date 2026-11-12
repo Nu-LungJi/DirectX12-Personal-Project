@@ -4,12 +4,12 @@
 #include <wrl/client.h>
 #include <dxcapi.h>
 
-#include "EngineCommonHeader/Engine_Default.h"
-#include "EngineCommonHeader/Engine_Interface.h"
-#include "EngineCommonHeader/Engine_Struct.h"
+#include "Engine_Default.h"
+#include "Engine_Interface.h"
+#include "Engine_Struct.h"
 
 ENGINE_START
-class ShaderResource final : public Interface::EngineResource {
+class ENGINE_DLL ShaderResource final : public Interface::EngineResource {
     friend class ShaderManager;
 public:
     explicit ShaderResource(const ShaderDesc& Desc) : m_ShaderDesc(Desc) {}
@@ -25,6 +25,14 @@ public:
         if (!m_pByteCode) return {};
         return { m_pByteCode->GetBufferPointer(), m_pByteCode->GetBufferSize() };
     }
+    
+public:
+    static const TypeInfo& StaticType() noexcept {
+        static const TypeInfo type{ "ENGINE::ShaderResource", &Interface::EngineResource::StaticType() };
+        return type;
+    }
+
+    const TypeInfo& GetType() const noexcept override { return StaticType(); }
     
 private:
     ShaderDesc  m_ShaderDesc{};

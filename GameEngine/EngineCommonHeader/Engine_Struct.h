@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Engine_Default.h"
 
 inline constexpr wchar_t VertexShader_MainEntryPoint[]   = L"VSMain";
@@ -13,13 +13,25 @@ ENGINE_START
 
 struct ShaderDesc final {
     ShaderDesc() = default;
-    ShaderDesc(const wstring& FilePath, const wstring& EntryPoint, const wstring& TargetProfile)
+    ShaderDesc(const std::wstring& FilePath, const std::wstring& EntryPoint, const std::wstring& TargetProfile)
         : m_sFilePath(FilePath), m_sEntryPoint(EntryPoint), m_sTargetProfile(TargetProfile) {}
         
     
     std::wstring m_sFilePath;       // XXX.hlsl, XXX.hlsli
     std::wstring m_sEntryPoint;     // VSMain, PSMain, CSMain
     std::wstring m_sTargetProfile;  // vs_6_0, ps_6_0, cs_6_0
+};
+
+struct TypeInfo {
+    std::string_view m_sName;
+    const TypeInfo* m_pParent = nullptr;
+
+    bool IsA(const TypeInfo& target) const noexcept {
+        for (auto* type = this; type; type = type->m_pParent) 
+            if (type->m_sName == target.m_sName) return true;
+
+        return false;
+    }
 };
 
 ENGINE_END
