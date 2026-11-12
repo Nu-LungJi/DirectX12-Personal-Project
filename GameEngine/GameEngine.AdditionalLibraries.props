@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+<PropertyGroup>
+    	<EngineLibraryRoot>$(MSBuildThisFileDirectory)..\Extension\</EngineLibraryRoot>
+
+    	<FmodLibraryName Condition="'$(Configuration)' == 'Debug'">fmodL_vc.lib</FmodLibraryName>
+    	<FmodLibraryName Condition="'$(Configuration)' != 'Debug'">fmod_vc.lib</FmodLibraryName>
+
+	
+</PropertyGroup>
+
+<ItemDefinitionGroup Condition="'$(Platform)' == 'x64'">
+<Link>
+	<AdditionalLibraryDirectories>
+		$(EngineLibraryRoot)DirectXTK;
+		$(EngineLibraryRoot)DirectXTex;
+		$(EngineLibraryRoot)DXC;
+		$(EngineLibraryRoot)FMOD;
+		$(EngineLibraryRoot)GameInput;
+
+		$(EngineLibraryRoot)DirectXHeader;	
+		$(EngineLibraryRoot)MeshOptimizer;	
+
+		%(AdditionalLibraryDirectories)
+	</AdditionalLibraryDirectories>
+
+	<AdditionalDependencies>
+		d3d12.lib;
+		dxgi.lib;
+		d3dcompiler.lib;
+		dxcompiler.lib;
+		dxil.lib;
+
+		DirectXTex.lib;
+		DirectXTK12.lib;
+		$(FmodLibraryName);
+		GameInput.lib;
+
+		%(AdditionalDependencies)
+	</AdditionalDependencies>
+</Link>
+</ItemDefinitionGroup>
+
+</Project>

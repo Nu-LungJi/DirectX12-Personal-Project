@@ -1,8 +1,9 @@
 #pragma once
+#include "Engine_Struct.h"
 
 namespace Interface {
 
-	class Uncopyable {
+	class ENGINE_DLL Uncopyable {
 	protected:
 		constexpr Uncopyable() = default;
 		constexpr virtual ~Uncopyable() = default;
@@ -23,11 +24,22 @@ namespace Interface {
 		}
 	};
 	
-	class EngineManager {
+	class ENGINE_DLL EngineManager {
 		
 	};
 	
-	class EngineResource {
+	class ENGINE_DLL EngineResource {
+	public:
+		virtual ~EngineResource() = default;
 		
+		static const ENGINE::TypeInfo& StaticType() noexcept {
+			static constexpr ENGINE::TypeInfo type { "Interface::EngineResource", nullptr };
+			return type;
+		}
+		
+		virtual const ENGINE::TypeInfo& GetType() const noexcept { return StaticType(); }
+
+		template<typename T>
+		bool IsA() const noexcept { return GetType().IsA(T::StaticType()); }
 	};
 }

@@ -21,10 +21,11 @@
     </EngineHeaderDirectories>
 
     <EngineDependencyDirectories>
-      $(ExtensionIncludeRoot);
-      $(ExtensionIncludeRoot)Include;
-      $(ExtensionIncludeRoot)GameInput\native\include;
-      $(DxcRoot)inc
+      	$(ExtensionIncludeRoot);
+      	$(ExtensionIncludeRoot)Include;
+	$(ExtensionIncludeRoot)DirectXHeader;
+      	$(ExtensionIncludeRoot)GameInput\native\include;
+      	$(DxcRoot)inc
     </EngineDependencyDirectories>
   </PropertyGroup>
 
@@ -40,4 +41,7 @@
       <AdditionalDependencies>dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+
+<Import Project="$(MSBuildThisFileDirectory)GameEngine.AdditionalLibraries.props" Condition="'$(MSBuildProjectName)' == 'GameEngine'" />
+
 </Project>

@@ -277,7 +277,7 @@ struct InputSnapshot final {
 
 class GameInstance;
 
-class ENGINE_DLL GameController : public Interface::Uncopyable {
+class ENGINE_DLL GameController final : public Interface::Uncopyable {
 	friend class GameInstance;
 private:
 	explicit GameController() = default;

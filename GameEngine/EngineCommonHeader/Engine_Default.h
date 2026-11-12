@@ -2,8 +2,15 @@
 #pragma warning(disable : 4251)
 
 #include <d3d12.h>
+#include <d3dx12.h>
 #include <dxgi1_6.h>
+#include <dxgicommon.h>
+#include <d3d12sdklayers.h>
+#include <d3dx12_check_feature_support.h>
 #include <wrl.h>
+
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
 
 #include <DirectXMath.h>
 #include <DirectXColors.h>
