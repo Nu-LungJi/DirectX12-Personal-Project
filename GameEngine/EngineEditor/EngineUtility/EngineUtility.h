@@ -30,5 +30,7 @@ public:
     static constexpr std::size_t AlignUp(std::size_t value, std::size_t alignment) noexcept {
         return (value + alignment - 1) & ~(alignment - 1);
     }
+    
+    XMFLOAT2 Convert_WorldPositionToScreen(XMVECTOR _WorldPosition);
 };
 ENGINE_END
