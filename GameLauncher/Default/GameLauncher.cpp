@@ -39,6 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	BOOL SystemRunningMessage = TRUE;
     
     GameManager& GM = GameManager::Create();
+    
     if (FAILED(GM.Initialize())) {
         DestroyWindow(hWnd);
         return EXIT_FAILURE;

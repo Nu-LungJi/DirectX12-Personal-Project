@@ -1,8 +1,11 @@
 <Solution>
   <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Profile" />
+    <BuildType Name="Release" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="GameEngine/Default/GameEngine.vcxproj" />
+  <Project Path="GameEngine/GameEngine.vcxproj" />
   <Project Path="GameLauncher/Default/GameLauncher.vcxproj" />
 </Solution>
