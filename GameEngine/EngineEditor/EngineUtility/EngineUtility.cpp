@@ -17,3 +17,8 @@ HRESULT ENGINE::EngineUtility::ErrorMassage(HRESULT hr, std::wstring_view locati
 
     return hr;
 }
+
+XMFLOAT2 ENGINE::EngineUtility::Convert_WorldPositionToScreen(XMVECTOR _WorldPosition) {
+    XMVECTOR CurrentPos = XMVectorSetW(_WorldPosition, 1.f);
+    return 
+}

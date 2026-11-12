@@ -31,7 +31,7 @@ concurrency:
 jobs:
   build:
     name: MSBuild x64 ${{ matrix.configuration }}
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     timeout-minutes: 20
 
     permissions:
@@ -58,6 +58,7 @@ jobs:
         uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
+	  vs-version: '[18.0,19.0)'
 
       - name: Build solution
         shell: pwsh
@@ -96,7 +97,7 @@ jobs:
 
   static-analysis:
     name: MSVC Analysis x64 ${{ matrix.configuration }}
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     timeout-minutes: 20
 
     permissions:
@@ -116,6 +117,7 @@ jobs:
         uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
+	  vs-version: '[18.0,19.0)'
 
       - name: Run MSVC code analysis
         shell: pwsh
@@ -158,7 +160,7 @@ jobs:
 
   clang-tidy:
     name: clang-tidy x64 ${{ matrix.configuration }}
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     timeout-minutes: 20
 
     permissions:
@@ -178,6 +180,7 @@ jobs:
         uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
+	  vs-version: '[18.0,19.0)'
 
       - name: Run clang-tidy
         shell: pwsh
