@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine_Default.h"
 
 inline constexpr wchar_t VertexShader_MainEntryPoint[]   = L"VSMain";
@@ -32,6 +32,12 @@ struct TypeInfo {
 
         return false;
     }
+};
+
+struct Vertex {
+    DirectX::XMFLOAT3A Position;
+    DirectX::XMFLOAT3A Normal;
+    DirectX::XMFLOAT2A TexCoord;
 };
 
 ENGINE_END
