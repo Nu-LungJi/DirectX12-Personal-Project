@@ -127,6 +127,7 @@
     <ClInclude Include="EngineManager\04. SoundManager\SoundManager.h" />
     <ClInclude Include="EngineManager\06. ShaderManager\ShaderManager.h" />
     <ClInclude Include="EngineManager\07. LightManager\LightManager.h" />
+    <ClInclude Include="EngineResource\MeshResource\MeshResource.h" />
     <ClInclude Include="EngineResource\ShaderResource\ShaderResource.h" />
     <ClInclude Include="EngineResource\SoundResource\SoundResource.h" />
   </ItemGroup>
@@ -140,6 +141,7 @@
     <ClCompile Include="EngineManager\04. SoundManager\SoundManager.cpp" />
     <ClCompile Include="EngineManager\06. ShaderManager\ShaderManager.cpp" />
     <ClCompile Include="EngineManager\07. LightManager\LightManager.cpp" />
+    <ClCompile Include="EngineResource\MeshResource\MeshResource.cpp" />
     <ClCompile Include="EngineResource\ShaderResource\ShaderResource.cpp" />
     <ClCompile Include="EngineResource\SoundResource\SoundResource.cpp" />
   </ItemGroup>
