@@ -25,11 +25,11 @@ public:
     void    Update();
 
     [[nodiscard("Warning : Check Shader Compiled Completely.")]]
-    HRESULT ShaderCompile(ShaderResource& Res);
+    HRESULT ShaderCompile(ShaderResource& Res) const;
     
 #ifdef _DEBUG
 public:
-    void  Monitor_ShaderChanges(const ShaderResource& Res);
+    void  Monitor_ShaderChanges(ShaderResource* Res);
 #endif
     
 private:

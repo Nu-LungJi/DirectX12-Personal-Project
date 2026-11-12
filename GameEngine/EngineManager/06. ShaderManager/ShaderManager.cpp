@@ -5,6 +5,8 @@
 #include "ShaderResource.h"
 ENGINE_USE
 
+
+
 HRESULT ShaderManager::Initialize() {
     HRESULT Result = DxcCreateInstance(CLSID_DxcUtils,IID_PPV_ARGS(m_pDXCUtils.GetAddressOf()));
     if (FAILED(Result)) return Result;
@@ -15,7 +17,7 @@ HRESULT ShaderManager::Initialize() {
     return m_pDXCUtils->CreateDefaultIncludeHandler(m_pDXCIncludeHandler.GetAddressOf());
 }
 
-HRESULT ShaderManager::ShaderCompile(ShaderResource& Res) {
+HRESULT ShaderManager::ShaderCompile(ShaderResource& Res) const {
     const ShaderDesc& Desc = Res.m_ShaderDesc;
     
     ComPtr<IDxcBlobEncoding> EncodingByteCode;
@@ -84,13 +86,15 @@ void ShaderManager::Update() {
 }
 
 #ifdef _DEBUG
-void  ShaderManager::Monitor_ShaderChanges(const ShaderResource& Res) {
+void  ShaderManager::Monitor_ShaderChanges(ShaderResource* Res) {
+    if (nullptr == Res) return;
+    
     for (const auto& Shader : m_MonitoredShader) 
-        if (Shader.Shader == &Res) return ;
+        if (Shader.Shader == Res) return ;
     
     std::error_code error;
-    const auto CurrentChangeTime = std::filesystem::last_write_time(Res.Get_ShaderDesc().m_sFilePath, error);
+    const auto CurrentChangeTime = std::filesystem::last_write_time(Res->Get_ShaderDesc().m_sFilePath, error);
 
-    m_MonitoredShader.push_back({&Res, error ? std::filesystem::file_time_type::min() : CurrentChangeTime });
+    m_MonitoredShader.emplace_back(WatchedShader{Res, error ? std::filesystem::file_time_type::min() : CurrentChangeTime });
 }
 #endif
