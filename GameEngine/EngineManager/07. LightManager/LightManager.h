@@ -11,8 +11,17 @@ class ENGINE_DLL LightManager final : public Interface::Uncopyable {
     friend class GameInstance;
 private:
     explicit LightManager() = default;
-    ~LightManager() override = default;
+    ~LightManager() override;
     
+public:
+    [[nodiscard("Warning : Check LightManager Initialize Result.")]]
+    bool Initialize();
+	
+    void Update();
+    
+    void Shutdown();
+
+private:
 };
 
 ENGINE_END

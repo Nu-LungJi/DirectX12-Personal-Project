@@ -10,13 +10,17 @@ class ENGINE_DLL RenderManager : public Interface::Uncopyable {
     friend class GameInstance;
 private:
     explicit RenderManager() = default;
-    ~RenderManager() = default;
+    ~RenderManager() override;
 	
 public:
     [[nodiscard("Warning : Check SoundManager Initialize Result.")]]
     bool Initialize(uint8_t MaxChannel = 128);
 	
+    void Update();
+    
     void Shutdown();
 
+private:
+    
 };
 ENGINE_END
