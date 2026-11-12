@@ -128,6 +128,7 @@
     <ClInclude Include="EngineManager\06. ShaderManager\ShaderManager.h" />
     <ClInclude Include="EngineManager\07. LightManager\LightManager.h" />
     <ClInclude Include="EngineResource\ShaderResource\ShaderResource.h" />
+    <ClInclude Include="EngineResource\SoundResource\SoundResource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineEditor\EngineUtility\EngineUtility.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="EngineManager\06. ShaderManager\ShaderManager.cpp" />
     <ClCompile Include="EngineManager\07. LightManager\LightManager.cpp" />
     <ClCompile Include="EngineResource\ShaderResource\ShaderResource.cpp" />
+    <ClCompile Include="EngineResource\SoundResource\SoundResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EngineShader\" />
