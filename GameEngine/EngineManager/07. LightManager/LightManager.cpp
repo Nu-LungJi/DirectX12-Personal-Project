@@ -1,7 +1,7 @@
 ﻿#include "LightManager.h"
 ENGINE_USE
 
-LightManager::~LightManager()   {}
+LightManager::~LightManager()   { Shutdown(); }
 
 bool LightManager::Initialize() {
     return true;

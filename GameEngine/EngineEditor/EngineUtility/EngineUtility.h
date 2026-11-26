@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "EngineCommonHeader/Engine_Default.h"
-#include "EngineCommonHeader/Engine_Interface.h"
+#include "Engine_Default.h"
+#include "Engine_Interface.h"
 
 ENGINE_START
 class GameInstance;
-class ENGINE_DLL EngineUtility : public Interface::Uncopyable {
+class ENGINE_DLL EngineUtility final : public Interface::EngineEditor, public Interface::Uncopyable {
     friend class GameInstance;
 private:
     explicit EngineUtility() = default;
@@ -30,6 +30,15 @@ public:
     static constexpr std::size_t AlignUp(std::size_t value, std::size_t alignment) noexcept {
         return (value + alignment - 1) & ~(alignment - 1);
     }
+    
+    [[nodiscard("Warning : Store Converted WideString Result.")]]
+    static std::wstring Convert_WideString(std::string_view str);
+    
+    [[nodiscard("Warning : Store Converted NormalString Result.")]]
+    static std::string Convert_NormalString(std::wstring_view str);
+    
+    [[nodiscard("Warning : Store HRESULTName Result.")]]
+    static std::wstring_view Get_HRESULTName(HRESULT Result);
     
     XMFLOAT2 Convert_WorldPositionToScreen(XMVECTOR _WorldPosition);
 };

@@ -275,13 +275,11 @@ struct InputSnapshot final {
 	}
 };
 
-class GameInstance;
-
 class ENGINE_DLL GameController final : public Interface::Uncopyable {
 	friend class GameInstance;
 private:
 	explicit GameController() = default;
-	~GameController() = default;
+	~GameController() override;
 	
 	// Call before starting update/read tasks or after all tasks have stopped.
 	[[nodiscard("Warning : Check GameController Initialize Result.")]]
@@ -289,12 +287,12 @@ private:
 
 public:
 	void Shutdown();
-	void SetInputFocused(bool focused) noexcept;
-	void BeginFrame();
+	void Set_InputFocused(bool focused) noexcept;
+	void Begin_Frame();
 
 public:
-	[[nodiscard]]
-	InputSnapshot GetSnapshot() const;
+	[[nodiscard("Warning: InputSnapshot value is discarded. Store or use the value.")]]
+	InputSnapshot Get_Snapshot() const;
 
 private:
 	template<typename T>

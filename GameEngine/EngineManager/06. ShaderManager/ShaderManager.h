@@ -25,7 +25,7 @@ public:
     void    Update();
 
     [[nodiscard("Warning : Check Shader Compiled Completely.")]]
-    HRESULT ShaderCompile(ShaderResource& Res) const;
+    HRESULT Compile_Shader(ShaderResource& Res) const;
     
 #ifdef _DEBUG
 public:
@@ -45,6 +45,9 @@ private:
     };
     std::vector<WatchedShader> m_MonitoredShader;
     std::chrono::steady_clock::time_point m_lastShaderCheck{};
+    
+    // Check HLSL file changed. (Default Value : 3 sec)
+    static constexpr std::chrono::milliseconds m_CheckInterval = std::chrono::milliseconds(3000);
 #endif
 };
 

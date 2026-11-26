@@ -9,7 +9,7 @@
 
 ENGINE_START
 
-class GameInstance;
+
 
 class ENGINE_DLL TimeManager final : public Interface::Uncopyable {
 	friend class GameInstance;
@@ -18,7 +18,7 @@ private:
 	~TimeManager() override = default;
 
 public:
-	using Clock		= std::chrono::steady_clock;			// Not Affected By System Setting
+	using Clock		= std::chrono::steady_clock;			// steady_clock : Not Affected By System Setting
 	using TimePoint = Clock::time_point;
 	using Seconds   = std::chrono::duration<double>;
 	
@@ -28,21 +28,21 @@ public:
 
 public:
 	// Game DeltaTime : Seconds elapsed between frames, affected by TimeScale.
-	[[nodiscard("Warning : Use DeltaTime Value.")]]
+	[[nodiscard("Warning : DeltaTime value is discarded. Store or use the value.")]]
 	double	Get_DeltaTime() const {
 		std::shared_lock lock{m_pMutex};
 		return m_pDeltaTime.count();
 	}
 	
 	// Unscaled DeltaTime : Seconds elapsed between frames, Not affected by TimeScale.
-	[[nodiscard("Warning : Use Get_UnscaledDeltaTime Value.")]]
+	[[nodiscard("Warning : Unscaled DeltaTime value is discarded. Store or use the value.")]]
 	double	Get_UnscaledDeltaTime() const {
 		std::shared_lock lock{m_pMutex};
 		return m_pUnscaledDeltaTime.count();
 	}
 	
 	// Time Scale : Multiplier applied to Game DeltaTime.
-	[[nodiscard("Warning : Use TimeScale Value.")]]
+	[[nodiscard("Warning : TimeScale value is discarded. Store or use the value.")]]
 	double	Get_TimeScale() const {
 		std::shared_lock lock{m_pMutex};
 		return m_pTimeScale;
@@ -55,7 +55,7 @@ public:
 	}
 	
 	// Game Pause State : Returns whether gameplay time is paused. - [True : Paused / False : Running]
-	[[nodiscard("Warning : Use GamePauseState Value.")]]
+	[[nodiscard("Warning : GamePauseState value is discarded. Store or use the value.")]]
 	bool	Get_GamePauseState() const {
 		std::shared_lock lock{m_pMutex};
 		return m_pGamePauseState;
@@ -68,8 +68,8 @@ public:
 	}
 
 private:
-	static constexpr Seconds	m_pZeroTime = Seconds::zero();
-	static constexpr double		m_pDefaultTimeScale = 1.0;
+	static  constexpr std::chrono::duration<double>	m_pZeroTime = std::chrono::duration<double>::zero();
+	static  constexpr double						m_pDefaultTimeScale = 1.0;
 	
 	mutable std::shared_mutex	m_pMutex;
 	
