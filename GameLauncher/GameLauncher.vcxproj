@@ -28,10 +28,10 @@
     <ProjectGuid>{147d5f49-2fd1-43df-9abc-8fd15d0e565b}</ProjectGuid>
     <RootNamespace>GameLauncher</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <VCToolsVersion>14.51.36231</VCToolsVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -41,12 +41,11 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <!-- <WholeProgramOptimization>true</WholeProgramOptimization> -->
     <CharacterSet>Unicode</CharacterSet>
     <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -56,12 +55,15 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <!-- <WholeProgramOptimization>true</WholeProgramOptimization> -->
     <CharacterSet>Unicode</CharacterSet>
     <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <PlatformToolset>v145</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <EnableUnitySupport>true</EnableUnitySupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -81,37 +83,35 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\GameEngine\GameEngine.props" />
+    <Import Project="..\GameEngine\GameEngine.props" />
+    <Import Project="GameLauncher.props" />
   </ImportGroup>
   <ItemDefinitionGroup>
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
-    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)GameLauncher\Bin\</OutDir>
+    <IntDir>$(SolutionDir)GameLauncher\$(Configuration)\</IntDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
-    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)GameLauncher\Bin\</OutDir>
+    <IntDir>$(SolutionDir)GameLauncher\$(Configuration)\</IntDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
+    <OutDir>$(SolutionDir)GameLauncher\Bin\</OutDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
-    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)GameLauncher\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)GameLauncher\Default\Bin\</OutDir>
+    <OutDir>$(SolutionDir)GameLauncher\Bin\</OutDir>
     <IncludePath>$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Users\Yun\vcpkg\installed\x64-windows\lib</LibraryPath>
-    <IntDir>$(SolutionDir)GameLauncher\Default\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)GameLauncher\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgManifestInstall>false</VcpkgManifestInstall>
@@ -123,6 +123,10 @@
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
+    <OutDir>$(SolutionDir)GameLauncher\Bin\</OutDir>
+    <IntDir>$(SolutionDir)GameLauncher\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -131,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -154,7 +158,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -164,7 +168,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Extension/DirectXTK;$(SolutionDir)Extension/DirectXTex;$(SolutionDir)Extension/Include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(SolutionDir)GameEngine\Default\Bin\GameEngine.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y "$(SolutionDir)GameEngine\Bin\GameEngine.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -175,7 +179,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -183,6 +187,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d12.lib;dxguid.lib;dinput8.lib;d3dcompiler.lib;DirectXTK12.lib;DirectXTex.lib;GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Extension/DirectXTK;$(SolutionDir)Extension/DirectXTex;$(SolutionDir)Extension/Include;$(SolutionDir)GameEngine/Bin/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)GameEngine\Bin\GameEngine.dll" "$(OutDir)"</Command>
@@ -198,7 +203,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -216,42 +221,175 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Extension/DirectXTK;$(SolutionDir)Extension/DirectXTex;$(SolutionDir)Extension/Include;$(SolutionDir)GameEngine/Bin/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>d3d12.lib;dxguid.lib;dinput8.lib;d3dcompiler.lib;DirectXTK12.lib;DirectXTex.lib;GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Public\GameManager.h" />
-    <ClInclude Include="COMMON.h" />
-    <ClInclude Include="DEFINE.h" />
-    <ClInclude Include="GameLauncher.h" />
-    <ClInclude Include="ENUM.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="PCH.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ClientLauncher\COMMON.h" />
+    <ClInclude Include="ClientLauncher\DEFINE.h" />
+    <ClInclude Include="ClientLauncher\ENUM.h" />
+    <ClInclude Include="ClientLauncher\Resource\framework.h" />
+    <ClInclude Include="ClientLauncher\Resource\GameLauncher.h" />
+    <ClInclude Include="ClientLauncher\Resource\Resource.h" />
+    <ClInclude Include="ClientLauncher\Resource\targetver.h" />
+    <ClInclude Include="ClientManager\GameManager\GameManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\GameManager.cpp" />
-    <ClCompile Include="GameLauncher.cpp" />
-    <ClCompile Include="PCH.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
+    <ClCompile Include="ClientLauncher\GameLauncher.cpp" />
+    <ClCompile Include="ClientManager\GameManager\GameManager.cpp">
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</BrowseInformationFile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <CompileAs>Default</CompileAs>
+      <UseDynamicDebugging>false</UseDynamicDebugging>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</ModuleDependenciesFile>
+      <ModuleOutputFile>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <!-- <Optimization>MaxSpeed</Optimization> -->
+      <!-- <ObjectFileName>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</ObjectFileName> -->
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\vc145.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\GameLauncher.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <!-- <RuntimeLibrary>MultiThreadedDll</RuntimeLibrary> -->
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <TrackerLogDirectory>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\GameLauncher.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</XMLDocumentationFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <IncludeInUnityFile>true</IncludeInUnityFile>
+      <UnityFilesDirectory>C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameLauncher\Release\</UnityFilesDirectory>
+      <OrderInUnityFile>100</OrderInUnityFile>
+      <CombineFilesOnlyFromTheSameFolder>false</CombineFilesOnlyFromTheSameFolder>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MaxFilesInUnityFile>0</MaxFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
+      <PreprocessorDefinitions>IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!-- <AdditionalIncludeDirectories>
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineCommonHeader;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineEditor;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource;
+
+	;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\00. GameInstance;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\01. GraphicDevice;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\02. TimeManager;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\03. GameController;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\04. SoundManager;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\05. RenderManager;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\06. ShaderManager;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineManager\07. LightManager;
+
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineEditor\EngineObjectPool;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineEditor\EngineThreadPool;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineEditor\EngineUtility;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\DepthStencilResource;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\MeshResource;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\RenderTargetResource;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\ShaderResource;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\SoundResource;
+
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\GPUBuffer;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\GPUBuffer\UploadBuffer;	
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\RenderPass;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\RenderPass\DebugView;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\EngineResource\RenderPass\LightPass;
+;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\..\Extension\;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\..\Extension\Include;
+	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\..\Extension\DirectXHeader;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\..\Extension\GameInput\native\include;
+      	C:\Users\Yun\Desktop\DirectX12-Personal-Project\GameEngine\..\Extension\DXC\inc
+;;C:\Users\Yun\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories> -->
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameLauncher.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameLauncher.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-	<ProjectReference Include="..\..\GameEngine\GameEngine.vcxproj">
+    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
       <Project>{c60be83d-f92e-48bb-b11d-905f7402ac98}</Project>
       <Name>GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ClientEditor\" />
+    <Folder Include="ClientGameObject\GamePlayer\" />
+    <Folder Include="ClientResource\" />
     <Folder Include="ClientShader\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientLauncher\Assets\GameLauncher.ico" />
+    <ResourceCompile Include="ClientLauncher\Assets\GameLauncher.rc" />
+    <Content Include="ClientLauncher\Assets\small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ItemDefinitionGroup>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>
+        $(ProjectDir)ClientLauncher;
+        $(ProjectDir)ClientLauncher\Assets;
+        $(ProjectDir)ClientLauncher\Resource;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
 </Project>

@@ -20,7 +20,8 @@
 		$(EngineLibraryRoot)GameInput;
 
 		$(EngineLibraryRoot)DirectXHeader;	
-		$(EngineLibraryRoot)MeshOptimizer;	
+		$(EngineLibraryRoot)MeshOptimizer;
+		$(EngineLibraryRoot)IMGUI;
 
 		%(AdditionalLibraryDirectories)
 	</AdditionalLibraryDirectories>

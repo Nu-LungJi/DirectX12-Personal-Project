@@ -6,6 +6,8 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="GameEngine/GameEngine.vcxproj" />
-  <Project Path="GameLauncher/Default/GameLauncher.vcxproj" />
+  <Project Path="GameEngine/GameEngine.vcxproj" Id="c60be83d-f92e-48bb-b11d-905f7402ac98" />
+  <Project Path="GameLauncher/GameLauncher.vcxproj">
+    <Platform Solution="Profile|x86" Project="x64" />
+  </Project>
 </Solution>
