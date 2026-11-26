@@ -1,9 +1,9 @@
-﻿#include "PCH.h"
-#include "framework.h"
-#include "PCH.h"
+﻿#include "framework.h"
+#include "resource.h"
 #include "DEFINE.h"
-#include "GameLauncher.h"
+#include "EngineLogger.h"
 #include "GameManager.h"
+#include "GameInstance.h"
 
 constexpr int MAX_LOADSTRING = 100;
 
@@ -22,12 +22,41 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+    if (!ENGINE::EngineLogger::Initialize()) {
+        OutputDebugStringW(L"Failed to initialize engine logger.\n");
+        return EXIT_FAILURE;
+    }
+
+    struct LoggerScope final {
+        ~LoggerScope() {
+            if (!ENGINE::EngineLogger::Shutdown())
+                OutputDebugStringW(L"Failed to flush engine logs.\n");
+        }
+    };
+
+    LoggerScope LoggerLifetime;
+    
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_GAMELAUNCHER, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
+    if (LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING) == 0) {
+        MessageBoxW(nullptr, L"Failed to load window title.", L"Error", MB_OK);
+        return EXIT_FAILURE;
+    }
+
+    if (LoadStringW(hInstance, IDC_GAMELAUNCHER, szWindowClass, MAX_LOADSTRING) == 0) {
+        MessageBoxW(nullptr, L"Failed to load window class name.", L"Error", MB_OK);
+        return EXIT_FAILURE;
+    }
+
+    if (MyRegisterClass(hInstance) == 0) {
+        DWORD Error = GetLastError();
+
+        MessageBoxW(nullptr, std::format(L"RegisterClassExW failed: {}", Error).c_str(), 
+            L"Error", MB_OK);
+
+        return EXIT_FAILURE;
+    }
 
     BOOL Result = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
     if (!Result) return FALSE;
@@ -44,15 +73,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     GameManager& GM = GameManager::Create();
     
     ENGINE::GraphicDeviceDesc GraphicDesc{};
-    GraphicDesc.WindowHandle    = hWnd;
-    GraphicDesc.WindowWidth     = WindowWidth;
-    GraphicDesc.WindowHeight    = WindowHeight;
-    GraphicDesc.BackBufferCount = 3;
-    GraphicDesc.EnableVSync     = true;
-    GraphicDesc.AllowTearing    = true;
+    GraphicDesc.m_hWnd              = hWnd;
+    GraphicDesc.m_iWindowWidth      = WindowWidth;
+    GraphicDesc.m_iWindowHeight     = WindowHeight;
+    GraphicDesc.m_iBackBufferCount  = BackBufferCount;
+    GraphicDesc.m_bEnableVSync      = EnableVSync;
+    GraphicDesc.m_bAllowTearing     = AllowTearing;
 
-    if (FAILED(GM.Initialize(GraphicDesc)))
-    {
+    const HRESULT InitializeResult = GM.Initialize(GraphicDesc);
+
+    ENGINE::GameInstance::Get_Instance().Dump_DebugMessages();
+
+    if (FAILED(InitializeResult)) {
+        (void)ENGINE::EngineLogger::Error("Engine initialization failed: 0x{:08X}", static_cast<uint32_t>(InitializeResult));
+        const HRESULT ShutdownResult = GM.ShutDown();
+
+        if (FAILED(ShutdownResult)) 
+            OutputDebugStringW(std::format(L"Engine shutdown failed. HRESULT: 0x{:08X}\n", static_cast<uint32_t>(ShutdownResult)).c_str());
+        
         DestroyWindow(hWnd);
         return EXIT_FAILURE;
     }
@@ -77,8 +115,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         GM.LateUpdate();
         RenderResult = GM.Render();
         
+        ENGINE::GameInstance::Get_Instance().Dump_DebugMessages();
+
         if (FAILED(RenderResult)) {
-            OutputDebugStringW(L"Rendering failed.\n");
+            (void)ENGINE::EngineLogger::Error(
+                "Rendering failed: 0x{:08X}",
+                static_cast<uint32_t>(RenderResult));
+
             break;
         }
         
@@ -86,15 +129,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             WaitMessage();
     }
 
-    if (IsWindow(hWnd))
-        DestroyWindow(hWnd);
+    const HRESULT ShutdownResult = GM.ShutDown();
+    if (FAILED(ShutdownResult)) OutputDebugStringW(std::format(L"Engine shutdown failed. HRESULT: 0x{:08X}\n", static_cast<uint32_t>(ShutdownResult)).c_str());
+    
+    if (IsWindow(hWnd)) DestroyWindow(hWnd);
 
-    return FAILED(RenderResult) ? EXIT_FAILURE : static_cast<int>(msg.wParam);
+    return (FAILED(RenderResult) || FAILED(ShutdownResult)) ? EXIT_FAILURE : static_cast<int>(msg.wParam);
 }
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex{};
+    WNDCLASSEXW wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -105,8 +150,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hInstance      = hInstance;
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMELAUNCHER));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = NULL;
+    wcex.hbrBackground  = reinterpret_cast<HBRUSH>((COLOR_WINDOW + 1));
+    wcex.lpszMenuName   = nullptr;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -142,9 +187,22 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
         hInstance,
         nullptr);
 
-    if (!hWnd)
-        return FALSE;
+    //if (!hWnd)
+    //    return FALSE;
+    if (hWnd == nullptr)
+    {
+        DWORD Error = GetLastError();
 
+        wchar_t Buffer[256]{};
+        swprintf_s(
+            Buffer,
+            L"CreateWindowExW Failed! Error Code: %lu",
+            Error
+        );
+
+        MessageBoxW(nullptr, Buffer, L"Window Error", MB_OK | MB_ICONERROR);
+        return false;
+    }
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
     return TRUE;
@@ -166,8 +224,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_COMMAND:
         {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
+            const int wmId = LOWORD(wParam);
             switch (wmId)
             {
             case IDM_ABOUT:

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+<PropertyGroup>
+
+<ClientIncludeRoot>$(MSBuildThisFileDirectory)</ClientIncludeRoot>
+
+<ExtensionIncludeRoot>$(ClientIncludeRoot)..\Extension\</ExtensionIncludeRoot>
+
+<DxcRoot>$(ExtensionIncludeRoot)DXC\</DxcRoot>
+
+<ClientCommonHeaderDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientCommonHeader', '*', System.IO.SearchOption.AllDirectories))</ClientCommonHeaderDirectories>
+
+<ClientLauncherDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientLauncher', '*', System.IO.SearchOption.AllDirectories))</ClientLauncherDirectories>
+
+<ClientManagerDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientManager', '*', System.IO.SearchOption.AllDirectories))</ClientManagerDirectories>
+
+<ClientEditorDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientEditor', '*', System.IO.SearchOption.AllDirectories))</ClientEditorDirectories>
+
+<ClientGameObjectDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientGameObject', '*', System.IO.SearchOption.AllDirectories))</ClientGameObjectDirectories>
+
+<ClientResourceDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientResource', '*', System.IO.SearchOption.AllDirectories))</ClientResourceDirectories>
+
+<ClientShaderDirectories>$([System.IO.Directory]::GetDirectories('$(ClientIncludeRoot)ClientShader', '*', System.IO.SearchOption.AllDirectories))</ClientShaderDirectories>
+
+<ClientHeaderDirectories>
+      	$(ClientIncludeRoot);
+      	$(ClientIncludeRoot)ClientCommonHeader;
+      	$(ClientIncludeRoot)ClientLauncher;
+      	$(ClientIncludeRoot)ClientManager;
+      	$(ClientIncludeRoot)ClientEditor;
+      	$(ClientIncludeRoot)ClientGameObject;
+      	$(ClientIncludeRoot)ClientResource;
+      	$(ClientIncludeRoot)ClientShader;
+
+	$(ClientCommonHeaderDirectories);
+      	$(ClientLauncherDirectories);
+      	$(ClientManagerDirectories);
+      	$(ClientEditorDirectories);
+	$(ClientGameObjectDirectories);
+	$(ClientResourceDirectories);
+	$(ClientShaderDirectories)
+
+</ClientHeaderDirectories>
+
+<ClientDependencyDirectories>
+      	$(ExtensionIncludeRoot);
+      	$(ExtensionIncludeRoot)Include;
+	$(ExtensionIncludeRoot)DirectXHeader;
+      	$(ExtensionIncludeRoot)GameInput\native\include;
+      	$(DxcRoot)inc
+</ClientDependencyDirectories>
+
+</PropertyGroup>
+
+<ItemDefinitionGroup>
+  <ClCompile>
+    <AdditionalIncludeDirectories>
+	$(ClientHeaderDirectories);$(ClientDependencyDirectories);%(AdditionalIncludeDirectories)
+    </AdditionalIncludeDirectories>
+  </ClCompile>
+</ItemDefinitionGroup>
+
+<ItemDefinitionGroup Condition="'$(MSBuildProjectName)' == 'GameLauncher' And '$(Platform)' == 'x64'">
+  <Link>
+    <AdditionalLibraryDirectories>$(DxcRoot)lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    <AdditionalDependencies>dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+  </Link>
+</ItemDefinitionGroup>
+
+</Project>

@@ -26,7 +26,7 @@
 #include <string>
 #include <string_view>
 #include <Windows.h>
-
+#include <source_location>
 #include <d3dcompiler.h>
 
 using Microsoft::WRL::ComPtr;
@@ -62,3 +62,20 @@ using namespace DirectX;
 #define			ENGINE_USE	    using namespace ENGINE;
 //////////////////////////////////////////////////// namespace Wrapper
 
+#define DX_CHECK(Logger, Expr) EngineDebugger::Check_Result((Logger), (Expr), #Expr, std::source_location::current())
+
+#define DX_TRY(Logger, Expr) \
+    do { \
+        const HRESULT TryResult = DX_CHECK(Logger, Expr); \
+        if (FAILED(TryResult)) return TryResult; \
+    } while (false)
+
+#ifdef _DEBUG
+#define DX_ASSERT(Logger, Expr) \
+        do { \
+            if (!(Expr)) EngineDebugger::Assert_Failure((Logger), #Expr, std::source_location::current()); \
+        } while (false)
+#else
+    #define DX_ASSERT(Logger, Expr) ((void)0)
+#endif
+//////////////////////////////////////////////////// Custom Debugger

@@ -24,22 +24,39 @@ namespace Interface {
 		}
 	};
 	
-	class ENGINE_DLL EngineManager {
-		
-	};
-	
-	class ENGINE_DLL EngineResource {
+	class ENGINE_DLL EngineSystem abstract {
 	public:
-		virtual ~EngineResource() = default;
+		virtual ~EngineSystem() = default;
 		
 		static const ENGINE::TypeInfo& StaticType() noexcept {
-			static constexpr ENGINE::TypeInfo type { "Interface::EngineResource", nullptr };
+			static constexpr ENGINE::TypeInfo type { "Interface::EngineSystem", nullptr };
 			return type;
 		}
 		
 		virtual const ENGINE::TypeInfo& GetType() const noexcept { return StaticType(); }
 
 		template<typename T>
-		bool IsA() const noexcept { return GetType().IsA(T::StaticType()); }
+		bool IsA() const noexcept { return GetType().IsA(T::StaticType()); }	
+	
+	};
+	
+	class ENGINE_DLL EngineManager abstract : public EngineSystem {
+	public:
+		virtual ~EngineManager() = default;
+	};
+	
+	class ENGINE_DLL EngineEditor abstract : public EngineSystem {
+	public:
+		virtual ~EngineEditor() = default;
+	};
+	
+	class ENGINE_DLL EngineResource abstract : public EngineSystem {
+	public:
+		virtual ~EngineResource() = default;
+	};
+	
+	class ENGINE_DLL EngineObject abstract : public EngineSystem {
+	public:
+		virtual ~EngineObject() = default;
 	};
 }

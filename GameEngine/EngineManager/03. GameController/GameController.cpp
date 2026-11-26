@@ -5,6 +5,8 @@
 
 ENGINE_USE
 
+GameController::~GameController() { Shutdown(); }
+
 HRESULT GameController::Initialize() {
     if (m_input) return HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED);
 
@@ -93,7 +95,7 @@ void GameController::Shutdown() {
     Publish();
 }
 
-void GameController::SetInputFocused(bool focused) noexcept {
+void GameController::Set_InputFocused(bool focused) noexcept {
     auto previous = m_focusToken.load(std::memory_order_relaxed);
 
     for (;;) {
@@ -105,7 +107,7 @@ void GameController::SetInputFocused(bool focused) noexcept {
     }
 }
 
-void GameController::BeginFrame() {
+void GameController::Begin_Frame() {
     if (!m_input)return;
 
     m_work.ClearTransient();
@@ -336,7 +338,7 @@ void GameController::Publish() {
     m_snapshot = m_work;
 }
 
-InputSnapshot GameController::GetSnapshot() const {
+InputSnapshot GameController::Get_Snapshot() const {
     std::lock_guard lock{m_snapshotMutex};
     return m_snapshot;
 }

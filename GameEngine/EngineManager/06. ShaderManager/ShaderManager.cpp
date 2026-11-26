@@ -5,8 +5,6 @@
 #include "ShaderResource.h"
 ENGINE_USE
 
-
-
 HRESULT ShaderManager::Initialize() {
     HRESULT Result = DxcCreateInstance(CLSID_DxcUtils,IID_PPV_ARGS(m_pDXCUtils.GetAddressOf()));
     if (FAILED(Result)) return Result;
@@ -17,7 +15,7 @@ HRESULT ShaderManager::Initialize() {
     return m_pDXCUtils->CreateDefaultIncludeHandler(m_pDXCIncludeHandler.GetAddressOf());
 }
 
-HRESULT ShaderManager::ShaderCompile(ShaderResource& Res) const {
+HRESULT ShaderManager::Compile_Shader(ShaderResource& Res) const {
     const ShaderDesc& Desc = Res.m_ShaderDesc;
     
     ComPtr<IDxcBlobEncoding> EncodingByteCode;
@@ -68,7 +66,7 @@ HRESULT ShaderManager::ShaderCompile(ShaderResource& Res) const {
 void ShaderManager::Update() {
 #ifdef _DEBUG
     const auto now = std::chrono::steady_clock::now();
-    if (now - m_lastShaderCheck < std::chrono::milliseconds(500)) return;
+    if (now - m_lastShaderCheck < m_CheckInterval) return; // if Lower than 3s, it is not monitored.
 
     m_lastShaderCheck = now;
     
@@ -79,7 +77,7 @@ void ShaderManager::Update() {
 
         watched.LastWriteTime = CurWriteTime;
 
-        const HRESULT Result = ShaderCompile(*watched.Shader);
+        const HRESULT Result = Compile_Shader(*watched.Shader);
         OutputDebugStringA(FAILED(Result) ? "Log : Shader Reload Failed.\n" : "Log : Shader Recompiled.\n");
     }
 #endif

@@ -144,7 +144,7 @@ HRESULT MeshResource::CreateBuffer(ID3D12Device* Device, const void* Data, uint6
     return S_OK;
 }
 
-void MeshResource::Release_UploadBuffer() const {
-    m_pVertexUploadBuffer->Release();
-    m_pIndexUploadBuffer->Release();
+void MeshResource::Release_UploadBuffer() {
+    m_pVertexUploadBuffer.Reset();
+    m_pIndexUploadBuffer.Reset();
 }

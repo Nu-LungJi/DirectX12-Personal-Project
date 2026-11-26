@@ -20,6 +20,7 @@
     <ProjectGuid>{c60be83d-f92e-48bb-b11d-905f7402ac98}</ProjectGuid>
     <RootNamespace>GameEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <VCToolsVersion>14.51.36231</VCToolsVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -109,6 +110,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PreprocessorDefinitions>_PROFILE;ENGINE_EXPORTS;NOMINMAX;IMGUI_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       	<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -118,6 +120,14 @@
   <ItemGroup>
     <ClInclude Include="EngineCommonHeader\Engine_Default.h" />
     <ClInclude Include="EngineCommonHeader\Engine_Interface.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineDebugger\EngineDebugger.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineDiagnostics\EngineDiagnostics.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineLogger\DebugLogSink.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineLogger\EngineLogger.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineLogger\FileLogSink.h" />
+    <ClInclude Include="EngineEditor\EngineDebugger\EngineLogger\LoggerService.h" />
+    <ClInclude Include="EngineEditor\EngineObjectPool\EngineObjectPool.h" />
+    <ClInclude Include="EngineEditor\EngineThreadPool\EngineThreadPool.h" />
     <ClInclude Include="EngineEditor\EngineUtility\EngineUtility.h" />
     <ClInclude Include="EngineManager\00. GameInstance\GameInstance.h" />
     <ClInclude Include="EngineManager\01. GraphicDevice\GraphicDevice.h" />
@@ -127,11 +137,26 @@
     <ClInclude Include="EngineManager\04. SoundManager\SoundManager.h" />
     <ClInclude Include="EngineManager\06. ShaderManager\ShaderManager.h" />
     <ClInclude Include="EngineManager\07. LightManager\LightManager.h" />
+    <ClInclude Include="EngineObject\Camera\Camera.h" />
+    <ClInclude Include="EngineResource\DepthStencilResource\DepthTargetResource.h" />
+    <ClInclude Include="EngineResource\GPUBuffer\UploadBuffer\UploadBuffer.h" />
     <ClInclude Include="EngineResource\MeshResource\MeshResource.h" />
+    <ClInclude Include="EngineResource\RenderPass\DebugView\DebugView.h" />
+    <ClInclude Include="EngineResource\RenderPass\LightPass\LightPass.h" />
+    <ClInclude Include="EngineResource\RenderPass\ToneMappingPass\ToneMappingPass.h" />
+    <ClInclude Include="EngineResource\RenderTargetResource\RenderTargetResource.h" />
     <ClInclude Include="EngineResource\ShaderResource\ShaderResource.h" />
     <ClInclude Include="EngineResource\SoundResource\SoundResource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineDebugger\EngineDebugger.cpp" />
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineDiagnostics\EngineDiagnostics.cpp" />
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineLogger\DebugLogSink.cpp" />
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineLogger\EngineLogger.cpp" />
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineLogger\FileLogSink.cpp" />
+    <ClCompile Include="EngineEditor\EngineDebugger\EngineLogger\LoggerService.cpp" />
+    <ClCompile Include="EngineEditor\EngineObjectPool\EngineObjectPool.cpp" />
+    <ClCompile Include="EngineEditor\EngineThreadPool\EngineThreadPool.cpp" />
     <ClCompile Include="EngineEditor\EngineUtility\EngineUtility.cpp" />
     <ClCompile Include="EngineManager\00. GameInstance\GameInstance.cpp" />
     <ClCompile Include="EngineManager\01. GraphicDevice\GraphicDevice.cpp" />
@@ -141,15 +166,24 @@
     <ClCompile Include="EngineManager\04. SoundManager\SoundManager.cpp" />
     <ClCompile Include="EngineManager\06. ShaderManager\ShaderManager.cpp" />
     <ClCompile Include="EngineManager\07. LightManager\LightManager.cpp" />
+    <ClCompile Include="EngineObject\Camera\Camera.cpp" />
+    <ClCompile Include="EngineResource\DepthStencilResource\DepthTargetResource.cpp" />
+    <ClCompile Include="EngineResource\GPUBuffer\UploadBuffer\UploadBuffer.cpp" />
     <ClCompile Include="EngineResource\MeshResource\MeshResource.cpp" />
+    <ClCompile Include="EngineResource\RenderPass\DebugView\DebugView.cpp" />
+    <ClCompile Include="EngineResource\RenderPass\LightPass\LightPass.cpp" />
+    <ClCompile Include="EngineResource\RenderPass\ToneMappingPass\ToneMappingPass.cpp" />
+    <ClCompile Include="EngineResource\RenderTargetResource\RenderTargetResource.cpp" />
     <ClCompile Include="EngineResource\ShaderResource\ShaderResource.cpp" />
     <ClCompile Include="EngineResource\SoundResource\SoundResource.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EngineShader\" />
+    <Content Include="EngineCommonHeader\Engine_Struct.h" />
+    <Content Include="EngineEditor\EngineDebugger\EngineDiagnostics\EngineDiagnosticsLookUp.h" />
+    <Content Include="EngineEditor\EngineDebugger\EngineLogger\LogTypeLookUp.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EngineCommonHeader\Engine_Struct.h" />
+    <Folder Include="EngineShader\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

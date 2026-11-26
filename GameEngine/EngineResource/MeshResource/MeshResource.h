@@ -5,13 +5,10 @@
 #include "Engine_Struct.h"
 
 ENGINE_START
-class ENGINE_DLL MeshResource final : public Interface::EngineResource {
+class ENGINE_DLL MeshResource final : public Interface::EngineResource, public Interface::Uncopyable {
 public:
     MeshResource() = default;
     ~MeshResource() override = default;
-    
-    MeshResource(const MeshResource&) = delete;
-    MeshResource& operator=(const MeshResource&) = delete;
 
 public:
     HRESULT Initialize(ID3D12Device* Device, ID3D12GraphicsCommandList* CommandList, const Vertex* VertexList, uint32_t VertexCount,
@@ -24,7 +21,7 @@ public:
     
     VOID    CopyBuffer(ID3D12GraphicsCommandList* CommandList,ID3D12Resource* Buffer, ID3D12Resource* UploadBuffer, uint64_t ByteCount, D3D12_RESOURCE_STATES FinalState);
     
-    VOID Release_UploadBuffer() const;
+    VOID Release_UploadBuffer();
     
 public:
     const D3D12_VERTEX_BUFFER_VIEW Get_VertexBufferView() const noexcept { return m_VertexBufferView; }
@@ -51,7 +48,7 @@ private:
     D3D12_VERTEX_BUFFER_VIEW    m_VertexBufferView{};
     D3D12_INDEX_BUFFER_VIEW     m_IndexBufferView{};
     
-    uint32_t m_iVertexCount;
-    uint32_t m_iIndexCount;
+    uint32_t m_iVertexCount = 0;
+    uint32_t m_iIndexCount = 0;
 };
 ENGINE_END

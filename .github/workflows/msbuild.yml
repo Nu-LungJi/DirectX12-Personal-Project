@@ -221,4 +221,3 @@ jobs:
           REPORT_CONFIGURATION: ${{ matrix.configuration }}
           REPORT_LOG: clang-tidy.log
         run: python .github/scripts/report_ci_failure.py
-
