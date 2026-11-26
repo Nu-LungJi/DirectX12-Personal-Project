@@ -5,9 +5,9 @@ inline constexpr wchar_t VertexShader_MainEntryPoint[]   = L"VSMain";
 inline constexpr wchar_t PixelShader_MainEntryPoint[]    = L"PSMain";
 inline constexpr wchar_t ComputeShader_MainEntryPoint[]  = L"CSMain";
 
-inline constexpr wchar_t VertexShader_DefaultProfile[]   = L"vs_6_0";
-inline constexpr wchar_t PixelShader_DefaultProfile[]    = L"ps_6_0";
-inline constexpr wchar_t ComputeShader_DefaultProfile[]  = L"cs_6_0";
+inline constexpr wchar_t VertexShader_DefaultProfile[]   = L"vs_6_7";
+inline constexpr wchar_t PixelShader_DefaultProfile[]    = L"ps_6_7";
+inline constexpr wchar_t ComputeShader_DefaultProfile[]  = L"cs_6_7";
 
 ENGINE_START
 
@@ -39,5 +39,20 @@ struct Vertex {
     DirectX::XMFLOAT3A Normal;
     DirectX::XMFLOAT2A TexCoord;
 };
+
+struct TransformConstants final {
+    DirectX::XMFLOAT4X4 World;
+    DirectX::XMFLOAT4X4 ViewProjection;
+    DirectX::XMFLOAT4X4 WorldInverseTranspose;
+
+    TransformConstants() {
+        DirectX::XMStoreFloat4x4(&World, DirectX::XMMatrixIdentity());
+
+        ViewProjection = World;
+        WorldInverseTranspose = World;
+    }
+};
+
+static_assert(sizeof(TransformConstants) == 192);
 
 ENGINE_END
