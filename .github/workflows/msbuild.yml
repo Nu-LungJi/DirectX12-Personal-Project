@@ -117,7 +117,7 @@ jobs:
         uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
-	  vs-version: '[18.0,19.0)'
+          vs-version: '[18.0,19.0)'
 
       - name: Run MSVC code analysis
         shell: pwsh
@@ -180,7 +180,7 @@ jobs:
         uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
-	  vs-version: '[18.0,19.0)'
+          vs-version: '[18.0,19.0)'
 
       - name: Run clang-tidy
         shell: pwsh
@@ -221,4 +221,3 @@ jobs:
           REPORT_CONFIGURATION: ${{ matrix.configuration }}
           REPORT_LOG: clang-tidy.log
         run: python .github/scripts/report_ci_failure.py
-
